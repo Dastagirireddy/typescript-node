@@ -2,23 +2,22 @@
 "use strict";
 const app = require("../app");
 const http = require("http");
-const debug = require("debug");
 class Www {
     constructor() {
-        this.port = 8080;
-        this.debug = debug("express:server");
+        this.port = process.env.PORT || 8080;
+        this.app = app;
     }
     static bootstrap() {
         return new Www();
     }
     init() {
-        this.app.set("port", port);
-        this.server = http.createServer(app);
+        this.app.set("port", this.port);
+        this.server = http.createServer(this.app);
         this.listener();
         this.errorHandler();
     }
     listener() {
-        this.server.listen(port);
+        this.server.listen(this.port);
     }
     errorHandler() {
         this.server.on("error", onError);
@@ -42,7 +41,7 @@ class Www {
             }
         }
         function onListening() {
-            this.debug("Listening on " + this.port);
+            console.log("Listening on " + this.port);
         }
     }
 }

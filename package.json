@@ -2,7 +2,7 @@
     "name": "typescript-node",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "./bin/www.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node ./bin/www"
@@ -16,5 +16,9 @@
     "dependencies": {
         "ejs": "^2.4.2",
         "express": "^4.14.0"
+    },
+    "engines": {
+        "node": "^4.4.0",
+        "npm": "^3.9.5"
     }
 }

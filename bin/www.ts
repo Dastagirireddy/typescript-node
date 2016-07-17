@@ -4,16 +4,15 @@
 
 import * as app from "../app";
 import * as http from "http";
-import * as debug from "debug";
 
 class Www {
     public port;
-    public debug;
     public server;
+    public app;
 
     constructor() {
-        this.port = 8080;
-        this.debug = debug("express:server");
+        this.port = process.env.PORT || 8080;
+        this.app = app;
     }
 
     public static bootstrap() {
@@ -21,14 +20,14 @@ class Www {
     }
 
     public init() {
-        this.app.set("port", port);
-        this.server = http.createServer(app);
+        this.app.set("port", this.port);
+        this.server = http.createServer(this.app);
         this.listener();
         this.errorHandler();
     }
 
     public listener() {
-        this.server.listen(port);
+        this.server.listen(this.port);
     }
 
     public errorHandler() {
@@ -58,7 +57,7 @@ class Www {
 
         function onListening() {
 
-            this.debug("Listening on " + this.port);
+            console.log("Listening on " + this.port);
         }
     }
 }
