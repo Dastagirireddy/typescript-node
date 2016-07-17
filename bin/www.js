@@ -1,45 +1,32 @@
 #!/usr/bin/env node
-
 "use strict";
-
-import * as app from "../app";
-import * as http from "http";
-
+const app = require("../app");
+const http = require("http");
 class Www {
-    public port;
-    public server;
-    public app;
-
     constructor() {
-        this.port = process.env.PORT || 8080;
+        this.port = process.env.PORT || 3000;
         this.app = app;
+        this.init();
     }
-
-    public static bootstrap() {
+    static bootstrap() {
         return new Www();
     }
-
-    public init() {
+    init() {
         this.app.set("port", this.port);
         this.server = http.createServer(this.app);
         this.listener();
         this.errorHandler();
     }
-
-    public listener() {
+    listener() {
         this.server.listen(this.port);
     }
-
-    public errorHandler() {
-        this.server.on("error", onError);
-        this.server.on("listening", onListening);
-
+    errorHandler() {
+        this.server.on("error", onError.bind(this));
+        this.server.on("listening", onListening.bind(this));
         function onError(error) {
-
             if (error.syscall !== "listen") {
                 throw error;
             }
-
             // handle specific listen errors with friendly messages
             switch (error.code) {
                 case "EACCES":
@@ -54,12 +41,9 @@ class Www {
                     throw error;
             }
         }
-
         function onListening() {
-
             console.log("Listening on " + this.port);
         }
     }
 }
-
 Www.bootstrap();
